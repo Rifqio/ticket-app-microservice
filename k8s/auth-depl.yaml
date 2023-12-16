@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-auth-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-auth-api
+  template:
+    metadata:
+      labels:
+        app: ticket-auth-api
+    spec: 
+      containers:
+      - name: ticket-auth-api
+        image: rifqio/auth-service-ticket
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-auth-api
+spec:
+  selector:
+    app: ticket-auth-api
+  ports:
+  - port: 3000
+    targetPort: 3000
+
