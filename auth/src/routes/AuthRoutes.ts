@@ -6,7 +6,7 @@ import {
     signup,
 } from '../controller/AuthController';
 import { SignupValidator } from './validator/AuthRoutesValidator';
-import { ValidationHandler } from '../middleware/HandleValidator';
+import { ValidationHandler } from '../server/middleware/HandleValidator';
 
 const route = express.Router();
 

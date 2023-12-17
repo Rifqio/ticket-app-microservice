@@ -9,7 +9,7 @@ metadata:
     name: ingress-service
 spec:
   rules:
-  - host: ticketing.com
+  - host: localhost
     http:
       paths:
       - pathType: ImplementationSpecific
