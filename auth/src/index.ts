@@ -1,16 +1,16 @@
 import express from 'express';
+import 'dotenv/config';
 import { Logger } from './helpers';
 import routes from './routes/manifest';
-import dotenv from 'dotenv';
 import { DatabaseConnection } from './server/database/DatabaseConnection';
-
-dotenv.config();
 
 const APP_PORT = process.env.APP_PORT || 3000;
 const APP_NAME = 'Auth-Service';
+
 const app = express();
 
 DatabaseConnection();
+app.set('trust proxy', true);
 app.use(express.json());
 app.use(routes);
 
