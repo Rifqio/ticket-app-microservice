@@ -43,6 +43,7 @@ export const Signin = async (req: Request, res: Response) => {
             data: {
                 email: user.email,
                 id: user.id,
+                token
             },
             message: 'User signin successfully',
         }
@@ -74,7 +75,7 @@ export const Signup = async (req: Request, res: Response) => {
       
         req.session = { token: userJwt };
         const responseBuilder = {
-            data: user,
+            data: { user, token: userJwt },
             message: 'User created successfully',
         }
     

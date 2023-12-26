@@ -13,7 +13,10 @@ spec:
     spec:
       containers:
       - name: ticket-client-ui
-        image: rifqio/ticket-client-next
+        image: rifqio/ticket-client-react
+        env:
+          - name: VITE_API_PATH
+            value: http://ticketing.api
 ---
 apiVersion: v1
 kind: Service

@@ -9,7 +9,10 @@ const APP_PORT = process.env.APP_PORT || 4000;
 const APP_NAME = 'Auth-Service';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    credentials: true,
+}));
 
 DatabaseConnection();
 app.set('trust proxy', true);
