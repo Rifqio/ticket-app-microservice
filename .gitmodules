@@ -1,0 +1,3 @@
+[submodule "package"]
+	path = package
+	url = https://github.com/Rifqio/ticket-app-package-common.git
