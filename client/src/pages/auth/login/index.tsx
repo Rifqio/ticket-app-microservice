@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../slices";
 
@@ -7,15 +7,24 @@ function Login() {
     const [password, setPassword] = useState<string>("");
     const navigate = useNavigate();
 
-    const { login, error, success } = useAuthStore((state) => state);
+    const { login, error, success, cleanupSuccess } = useAuthStore(
+        (state) => state
+    );
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await login(email, password);
+    };
+
+    useEffect(() => {
         if (success) {
             navigate("/");
         }
-    };
+
+        return () => {
+            cleanupSuccess();
+        };
+    }, [success, navigate]);
 
     const ShowError = () => {
         return (

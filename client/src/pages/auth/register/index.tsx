@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../slices/authSlice";
 
@@ -12,10 +12,14 @@ function Register() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         await register(email, password);
-        if (success) navigate("/");
     };
+
+    useEffect(() => {
+        if (success) {
+            navigate("/");
+        }
+    }, [success, navigate]);
 
     const ShowError = () => {
         return (

@@ -2,9 +2,8 @@ import express, { Response } from 'express';
 import boom from 'express-boom';
 import cookieSession from 'cookie-session';
 
-import { HttpLogger } from '../server/middleware';
-
 import AuthRoutes from './AuthRoutes';
+import { HttpLogger } from '@rifqioktario/ticketing-common';
 
 const app = express();
 

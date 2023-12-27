@@ -1,9 +1,9 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-import { Logger } from './helpers';
 import routes from './routes/manifest';
 import { DatabaseConnection } from './server/database/DatabaseConnection';
+import { Logger } from '@rifqioktario/ticketing-common';
 
 const APP_PORT = process.env.APP_PORT || 4000;
 const APP_NAME = 'Auth-Service';
