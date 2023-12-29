@@ -26,12 +26,12 @@ const userSchema = new Schema<UserAttrs>(
                 ret.id = ret._id;
                 delete ret._id;
             },
-        }
+        },
     },
 );
 
 userSchema.pre('save', async function (done) {
-    if(this.isModified('password')) {
+    if (this.isModified('password')) {
         const hashed = await Encrypt.toHash(this.get('password'));
         this.set('password', hashed);
     }
