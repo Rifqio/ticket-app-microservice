@@ -13,13 +13,6 @@ spec:
     http:
       paths:
       - pathType: ImplementationSpecific
-        path: "/api/users/?(.*)"
-        backend:
-          service:
-            name: ticket-auth-api
-            port: 
-              number: 4000
-      - pathType: ImplementationSpecific
         path: /?(.*)
         backend:
           service:
@@ -36,3 +29,10 @@ spec:
               name: ticket-auth-api
               port:
                 number: 4000 
+        - pathType: ImplementationSpecific
+          path: /api/ticket/?(.*)
+          backend:
+            service:
+              name: ticket-ticket-api
+              port:
+                number: 5000
