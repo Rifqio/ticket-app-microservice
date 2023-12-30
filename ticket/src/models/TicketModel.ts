@@ -1,12 +1,17 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, PaginateModel } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+
 interface TicketAttrs {
     title: string;
     price: number;
     userId: string;
 }
 
-const ticketSchema = new Schema<TicketAttrs>(
+interface TicketDocument extends Document, TicketAttrs {}
+
+interface PaginatedTicketModel extends PaginateModel<TicketDocument> {}
+
+const ticketSchema = new Schema<TicketDocument>(
     {
         title: {
             type: String,
@@ -14,6 +19,10 @@ const ticketSchema = new Schema<TicketAttrs>(
         },
         price: {
             type: Number,
+            required: true,
+        },
+        userId: {
+            type: String,
             required: true,
         },
     },
@@ -31,4 +40,6 @@ const ticketSchema = new Schema<TicketAttrs>(
 
 ticketSchema.plugin(mongoosePaginate);
 
-export const Ticket = model('Ticket', ticketSchema)<TicketAttrs>;
+const Ticket = model<TicketDocument, PaginatedTicketModel>('Ticket', ticketSchema);
+
+export { Ticket };
