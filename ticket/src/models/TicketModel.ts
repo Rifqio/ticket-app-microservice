@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-
+import mongoosePaginate from 'mongoose-paginate-v2';
 interface TicketAttrs {
     title: string;
     price: number;
@@ -29,5 +29,6 @@ const ticketSchema = new Schema<TicketAttrs>(
     },
 );
 
+ticketSchema.plugin(mongoosePaginate);
 
 export const Ticket = model('Ticket', ticketSchema)<TicketAttrs>;

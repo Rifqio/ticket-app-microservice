@@ -17,3 +17,12 @@ export const CreateTicketValidator = checkSchema({
         isEmpty: false,
     },
 });
+
+export const GetTicketValidator = checkSchema({
+    id: {
+        in: ['params'],
+        isMongoId: true,
+        trim: true,
+        isEmpty: false,
+    }
+});
