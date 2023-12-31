@@ -7,6 +7,7 @@ const APP_NAME = 'Auth-Service';
 const app = express();
 
 app.use(express.json());
+
 app.use(routes);
 
 app.listen(APP_PORT, () => {
