@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-api-mongodb
+spec:
+  selector:
+    matchLabels:
+      app: ticket-api-mongodb
+  template:
+    metadata:
+      labels:
+        app: ticket-api-mongodb
+    spec:
+      containers:
+      - name: ticket-api-mongodb
+        image: mongo:jammy
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-api-mongodb
+spec:
+  selector:
+    app: ticket-api-mongodb
+  ports:
+  - port: 27017 
+    targetPort: 27017
+
