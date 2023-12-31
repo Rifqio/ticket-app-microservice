@@ -18,4 +18,11 @@ spec:
           service:
             name: ticket-auth-api
             port: 
+              number: 4000
+      - pathType: ImplementationSpecific
+        path: /?(.*)
+        backend:
+          service:
+            name: ticket-client-ui
+            port:
               number: 3000

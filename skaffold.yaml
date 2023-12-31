@@ -15,4 +15,12 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: rifqio/ticket-client-next
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/app/**/*.js'
+            dest: .
   

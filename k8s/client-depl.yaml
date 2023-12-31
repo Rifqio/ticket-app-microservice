@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-client-ui
+spec:
+  selector:
+    matchLabels:
+      app: ticket-client-ui
+  template:
+    metadata:
+      labels:
+        app: ticket-client-ui
+    spec:
+      containers:
+      - name: ticket-client-ui
+        image: rifqio/ticket-client-next
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-client-ui
+spec:
+  selector:
+    app: ticket-client-ui
+  ports:
+  - port: 3000
+    targetPort: 3000
