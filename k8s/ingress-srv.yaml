@@ -30,7 +30,7 @@ spec:
               port:
                 number: 4000 
         - pathType: ImplementationSpecific
-          path: /api/ticket/?(.*)
+          path: /api/tickets/?(.*)
           backend:
             service:
               name: ticket-ticket-api
