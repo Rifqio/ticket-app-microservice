@@ -37,7 +37,7 @@ export const Signin = async (req: Request, res: Response) => {
             return res.boom.badRequest('Email or password mismatch');
         }
     
-        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET as string);
+        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET!, { expiresIn: '1d' });
         
         Logger.info(`[${Namespace}, Signin] User signin successfully: ${email}`);    
         const responseBuilder = {
@@ -70,7 +70,7 @@ export const Signup = async (req: Request, res: Response) => {
         }
         
         const user = await new User({ email, password }).save();
-        const userJwt = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET as string);
+        const userJwt = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET!, { expiresIn: '1d' });
         
         Logger.info(`[${Namespace}, Signup] User created successfully: ${email}`);
       

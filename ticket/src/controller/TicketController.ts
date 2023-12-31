@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Ticket } from '../models';
 import { isEmpty } from 'lodash';
+// import { PaginationParameters } from 'mongoose-paginate-v2';
 
 const Namespace = 'TicketController';
 export class TicketController {
@@ -27,17 +28,15 @@ export class TicketController {
             )
             .subscribe({
                 next: (ticket) => {
-                    Logger.info(
-                        `[${Namespace}, createTicket] Ticket created successfully: ${ticket.id}`,
-                    );
+                    //prettier-ignore
+                    Logger.info(`[${Namespace}, createTicket] Ticket created successfully: ${ticket.id}`);
                     return res
                         .status(201)
                         .json(BaseResponse.successSaveResponse(ticket));
                 },
                 error: (error) => {
-                    Logger.error(
-                        `[${Namespace}, createTicket] Error: ${error.message} | Stack: ${error.stack}`,
-                    );
+                    //prettier-ignore
+                    Logger.error(`[${Namespace}, createTicket] Error: ${error.message} | Stack: ${error.stack}`);
                     return res.boom.badImplementation();
                 },
             });
@@ -46,9 +45,8 @@ export class TicketController {
     static async getAllTickets(req: Request, res: Response) {
         from(Ticket.paginate()).subscribe({
             next: (tickets) => {
-                Logger.info(
-                    `[${Namespace}, getAllTickets] Tickets found successfully`,
-                );
+                //prettier-ignore
+                Logger.info( `[${Namespace}, getAllTickets] Tickets found successfully`);
                 return res.json(
                     BaseResponse.successResponse({
                         data: tickets,
@@ -57,9 +55,8 @@ export class TicketController {
                 );
             },
             error: (error) => {
-                Logger.error(
-                    `[${Namespace}, getAllTickets] Error: ${error.message} | Stack: ${error.stack}`,
-                );
+                //prettier-ignore
+                Logger.error(`[${Namespace}, getAllTickets] Error: ${error.message} | Stack: ${error.stack}`);
                 return res.boom.badImplementation();
             },
         });
@@ -74,10 +71,9 @@ export class TicketController {
                     Logger.info(`[${Namespace}, getTicket] Ticket not found`);
                     return res.boom.notFound('Ticket not found');
                 }
+                // prettier-ignore
+                Logger.info(`[${Namespace}, getTicket] Ticket found successfully: ${ticket.id}`);
 
-                Logger.info(
-                    `[${Namespace}, getTicket] Ticket found successfully: ${ticket.id}`,
-                );
                 return res.json(
                     BaseResponse.successResponse({
                         data: ticket,
@@ -86,9 +82,8 @@ export class TicketController {
                 );
             },
             error: (error) => {
-                Logger.error(
-                    `[${Namespace}, getTicket] Error: ${error.message} | Stack: ${error.stack}`,
-                );
+                //prettier-ignore
+                Logger.error(`[${Namespace}, getTicket] Error: ${error.message} | Stack: ${error.stack}`);
                 return res.boom.badImplementation();
             },
         });
@@ -96,9 +91,10 @@ export class TicketController {
 
     static async updateTicket(req: Request, res: Response) {
         const { id } = req.params;
+        const { id: userId } = req.currentUser!
         const { title, price } = req.body;
 
-        from(Ticket.findById(id))
+        from(Ticket.findOne({ _id: id, userId }))
             .pipe(
                 mergeMap((ticket) => {
                     if (!ticket) {
@@ -106,7 +102,7 @@ export class TicketController {
                         return of();
                     }
                     ticket.set({ title, price, userId: req.currentUser?.id! });
-                    return ticket.save()
+                    return ticket.save();
                 }),
                 map((ticket) => {
                     return {
@@ -118,6 +114,7 @@ export class TicketController {
             )
             .subscribe({
                 next: (ticket) => {
+                    //prettier-ignore
                     Logger.info(`[${Namespace}, updateTicket] Ticket updated successfully: ${ticket}`);
                     return res.json(
                         BaseResponse.successResponse({
@@ -127,6 +124,7 @@ export class TicketController {
                     );
                 },
                 error: (error) => {
+                    //prettier-ignore
                     Logger.error(`[${Namespace}, updateTicket] Error: ${error.message} | Stack: ${error.stack}`);
                     return res.boom.badImplementation();
                 },

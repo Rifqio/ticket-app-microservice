@@ -13,6 +13,17 @@ export const CreateTicketValidator = checkSchema({
     price: {
         in: ['body'],
         isNumeric: true,
+        custom: {
+            options: (value, { req }) => {
+                const price = parseFloat(value);
+                
+                if (price <= 0) {
+                    throw new Error('Price must be greater than 0');
+                }
+
+                return true;
+            },
+        },
         trim: true,
         isEmpty: false,
     },
