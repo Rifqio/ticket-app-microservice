@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { Logger } from '@rifqioktario/ticketing-common';
 
 import { User } from '../models';
-import { Encrypt, Logger } from '../helpers';
+import { Encrypt } from '../helpers';
 import BaseResponse from '../server/response/ResponseHandler';
 import { ExceptionHandler } from '../server/exception/ExceptionHandler';
 

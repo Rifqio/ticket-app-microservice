@@ -6,7 +6,7 @@ import {
     Signup,
 } from '../controller/AuthController';
 import { SigninValidator, SignupValidator } from './validator/AuthRoutesValidator';
-import { AuthHandler, ValidationHandler } from '../server/middleware';
+import { AuthHandler, ValidationHandler } from '@rifqioktario/ticketing-common';
 
 const route = express.Router();
 
