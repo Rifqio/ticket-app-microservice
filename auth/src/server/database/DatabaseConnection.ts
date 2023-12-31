@@ -13,6 +13,7 @@ export const DatabaseConnection = async () => {
             throw new Error("Internal Server Error");
         }
         await mongoose.connect(MONGO_URL);
+        mongoose.set('debug', true);
         Logger.info("[Database-Connection] Connected to database");
     } catch (error: any) {
         Logger.error(`[Database-Connection] Failed to connect to database ${error.message} ${error.stack}`);
