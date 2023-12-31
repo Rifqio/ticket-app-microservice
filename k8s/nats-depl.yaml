@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-nats-srv
+spec:
+  selector:
+    matchLabels:
+      app: ticket-nats-srv
+  template:
+    metadata:
+      labels:
+        app: ticket-nats-srv
+    spec:
+      containers:
+      - name: ticket-nats-srv
+        image: nats-streaming:0.17.0
+        args: ['-p', '4222', '-m', '8222', 'hbi', '5s', '-hbt', '5s', '-hbf', '2', '-SD', '-cid', 'ticketing']
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-nats-srv
+spec:
+  selector:
+    app: myapp
+  ports:
+  - port: 4222
+    name: client
+    targetPort: 4222
+  - port: 8222
+    name: monitoring
+    targetPort: 8222

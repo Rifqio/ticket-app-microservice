@@ -10,7 +10,7 @@ const APP_NAME = 'Ticket-Service';
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: '*',
     credentials: true,
 }));
 
