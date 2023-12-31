@@ -42,6 +42,7 @@
     "@types/express-boom": "^3.0.4",
     "@types/jest": "^29.5.11",
     "@types/lodash": "^4.14.202",
+    "@types/mongoose-paginate-v2": "^1.6.5",
     "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",

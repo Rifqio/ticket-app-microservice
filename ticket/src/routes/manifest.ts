@@ -10,7 +10,7 @@ const app = express();
 app.use(HttpLogger);
 app.use(cookieSession({ signed: false, secure: false }));
 app.use(boom());
-// app.use(AuthHandler)
+app.use(AuthHandler)
 
 app.use('/api/tickets', TicketRoutes);
 

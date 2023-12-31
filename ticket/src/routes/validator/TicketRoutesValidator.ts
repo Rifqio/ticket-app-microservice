@@ -24,5 +24,6 @@ export const GetTicketValidator = checkSchema({
         isMongoId: true,
         trim: true,
         isEmpty: false,
-    }
+        errorMessage: 'Invalid Ticket ID',
+    },
 });
