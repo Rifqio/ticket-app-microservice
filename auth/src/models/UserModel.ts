@@ -19,6 +19,14 @@ const userSchema = new Schema<UserAttrs>(
     },
     {
         timestamps: true,
+        toJSON: {
+            transform(_, ret) {
+                delete ret.password;
+                delete ret.__v;
+                ret.id = ret._id;
+                delete ret._id;
+            },
+        }
     },
 );
 
