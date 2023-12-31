@@ -26,3 +26,13 @@ spec:
             name: ticket-client-ui
             port:
               number: 3000
+  - host: ticketing.api
+    http: 
+      paths:
+        - pathType: ImplementationSpecific
+          path: /api/users/?(.*)
+          backend:
+            service:
+              name: ticket-auth-api
+              port:
+                number: 4000 

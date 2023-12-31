@@ -18,7 +18,7 @@ declare global {
 export const AuthHandler = (req: Request, res: Response, next: NextFunction) => {
     try {
         const { JWT_SECRET } = process.env;
-        const token = req.session?.token;
+        const token = req.session?.token || req.headers.authorization?.split(' ')[1]; 
 
         if (!token) return res.boom.unauthorized('Not authorized');
 
@@ -28,6 +28,9 @@ export const AuthHandler = (req: Request, res: Response, next: NextFunction) => 
         return next();   
     } catch (error: any) {
         Logger.error(`[AuthHandler] ${error.message} | ${error.stack}`);
+        if (error.message === 'invalid signature') {
+            return res.boom.unauthorized('Invalid Signature');
+        }
         return res.boom.badImplementation('Internal Server Error');
     }
 }

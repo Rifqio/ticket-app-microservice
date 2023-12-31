@@ -1,9 +1,6 @@
-FROM node:20.10.0-slim
-
+FROM node:18-alpine
 WORKDIR /app
 COPY package.json .
 RUN npm install
-
 COPY . .
-
 CMD ["npm", "run", "dev"]
