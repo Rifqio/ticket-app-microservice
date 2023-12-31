@@ -11,14 +11,8 @@ const { JWT_SECRET } = process.env;
 
 export const CurrentUser = (req: Request, res: Response) => {
     try {        
-        if (!req.session?.token) {
-            Logger.warn(`[${Namespace}, CurrentUser] User not found`);
-            return res.json(BaseResponse.successResponse({ data: null, message: 'User not found' }));
-        }
-
-        const payload = jwt.verify(req.session.token, JWT_SECRET as string);
-        Logger.info(`[${Namespace}, CurrentUser] User found, payload: ${JSON.stringify(payload)}`);
-        return res.json(BaseResponse.successResponse({ data: payload, message: 'User found' }));
+        Logger.info(`[${Namespace}, CurrentUser] User found, payload: ${JSON.stringify(req.currentUser)}`);
+        return res.json(BaseResponse.successResponse({ data: req.currentUser, message: 'User found' }));
     } catch (error: any) {
         Logger.error(`[${Namespace}, CurrentUser] Error: ${error.message}`);
         return ExceptionHandler(error, req, res);
@@ -92,5 +86,22 @@ export const Signup = async (req: Request, res: Response) => {
 };
 
 export const Signout = (req: Request, res: Response) => {
-    return res.json({ currentUser: null });
+    try {
+        if (!req.session?.token) {
+            Logger.warn(`[${Namespace}, Signout] Authentication required`);
+            return res.boom.unauthorized('Authentication required');
+        }
+
+        req.session = null;
+        const responseBuilder = {
+            data: null,
+            message: 'User signout successfully',
+        };
+
+        Logger.info(`[${Namespace}, Signout] User signout successfully`);
+        return res.json(BaseResponse.successResponse(responseBuilder));
+    } catch (error: any) {
+        Logger.error(`[${Namespace}, Signout] Error: ${error.message}`);
+        return ExceptionHandler(error, req, res);
+    }
 };

@@ -6,12 +6,14 @@ import {
     Signup,
 } from '../controller/AuthController';
 import { SigninValidator, SignupValidator } from './validator/AuthRoutesValidator';
-import { ValidationHandler } from '../server/middleware/HandleValidator';
+import { AuthHandler, ValidationHandler } from '../server/middleware';
 
 const route = express.Router();
 
 route.post('/signup', SignupValidator, ValidationHandler, Signup);
 route.post('/signin', SigninValidator, ValidationHandler, Signin);
+
+route.use(AuthHandler);
 route.post('/signout', Signout);
 route.get('/currentuser', CurrentUser);
 

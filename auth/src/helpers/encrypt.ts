@@ -17,6 +17,4 @@ export class Encrypt {
 
         return buffer.toString('hex') === hashedData
     }
-
-    print() {}
 }
