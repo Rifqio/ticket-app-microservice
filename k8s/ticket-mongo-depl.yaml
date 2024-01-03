@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ticket-api-mongodb
-        image: mongo:jammy
+        image: mongo
         resources:
           limits:
             cpu: "500m"

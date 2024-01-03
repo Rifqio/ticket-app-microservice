@@ -17,10 +17,7 @@ spec:
         image: rifqio/auth-service-ticket
         env:
           - name: JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: jwt-secret
-                key: JWT_SECRET
+            value: "29727dd2e90e14090690e4d60c89eb70"
           - name: MONGO_URL
             value: mongodb://auth-api-mongodb:27017/auth
           - name: APP_PORT
