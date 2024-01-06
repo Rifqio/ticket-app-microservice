@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../slices";
 
 function Login() {
@@ -10,6 +10,8 @@ function Login() {
     const { login, error, success, cleanupSuccess } = useAuthStore(
         (state) => state
     );
+
+    const authGoogleUrl = 'http://localhost:4000/api/users/signin/google';
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,7 +61,8 @@ function Login() {
                     className="form-control"
                 />
             </div>
-            <button className="btn btn-primary">Sign In</button>
+            <button className="btn btn-primary mx-4">Sign In</button>
+            <Link to={authGoogleUrl} className="btn btn-primary">Signin With Google</Link>
         </form>
     );
 }
