@@ -1,17 +1,35 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import {
     CurrentUser,
     Signin,
     Signout,
     Signup,
 } from '../controller/AuthController';
-import { SigninValidator, SignupValidator } from './validator/AuthRoutesValidator';
+import {
+    SigninValidator,
+    SignupValidator,
+} from './validator/AuthRoutesValidator';
 import { AuthHandler, ValidationHandler } from '@rifqioktario/ticketing-common';
+import passport from '../controller/PassportController';
+const { CLIENT_HOST } = process.env;
 
 const route = express.Router();
 
 route.post('/signup', SignupValidator, ValidationHandler, Signup);
 route.post('/signin', SigninValidator, ValidationHandler, Signin);
+
+route.get(
+    '/signin/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }),
+);
+
+route.get(
+    '/signin/google/callback',
+    passport.authenticate('google', {
+        failureMessage: true,
+        successRedirect: CLIENT_HOST,
+    }),
+);
 
 route.use(AuthHandler);
 route.post('/signout', Signout);

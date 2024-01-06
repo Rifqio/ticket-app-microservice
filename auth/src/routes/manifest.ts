@@ -4,11 +4,16 @@ import cookieSession from 'cookie-session';
 
 import AuthRoutes from './AuthRoutes';
 import { HttpLogger } from '@rifqioktario/ticketing-common';
+import passport from 'passport';
 
 const app = express();
 
 app.use(HttpLogger);
-app.use(cookieSession({ signed: false, secure: false }));
+app.use(
+    cookieSession({ signed: false, secure: false, maxAge: 24 * 60 * 60 * 100 }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(boom());
 
 app.use('/api/users', AuthRoutes);
