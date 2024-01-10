@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Home, Login, Register } from "../routes/constants";
+import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../slices";
 import { isEmpty } from "lodash";
 
@@ -8,11 +9,11 @@ function Header() {
 
     const LoginButton = () => {
         return (
-            <Link to={Login}>
-                <button type="button" className="btn px-3 me-2">
-                    Login
-                </button>
-            </Link>
+            // <Link to={Login}>
+            <div>
+                <Button className="text-red-500">Login</Button>
+            </div>
+            // </Link>
         );
     };
 
@@ -66,6 +67,7 @@ function Header() {
                     <div className="d-flex align-items-center">
                         {isLoggedIn()}
                     </div>
+                    <h1>Hello</h1>
                 </div>
             </div>
         </nav>

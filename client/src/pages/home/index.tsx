@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAuthStore } from "../../slices";
 import { isEmpty } from "lodash";
+import { Button } from "@/components/ui/button";
 
 function Home() {
     const { user, currentUser, cleanupError } = useAuthStore((state) => state);
@@ -19,7 +20,6 @@ function Home() {
 
     useEffect(() => {
         currentUser();
-        console.log('Hello');
                 
         return () => {
             cleanupError();
@@ -28,7 +28,7 @@ function Home() {
 
     return (
         <>
-            <h1>Home</h1>
+            <h1 className="text-red-500">Home</h1>
             <div className="card">{generateContent()}</div>
         </>
     );

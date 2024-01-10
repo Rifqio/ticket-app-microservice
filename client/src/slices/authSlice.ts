@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import axios from "../helper/axios";
+import axios from "../lib/helper/axios";
 import Cookies from "js-cookie";
-import { currentUserUrl, signInUrl, signUpUrl } from "../helper/urlConstants";
+import { currentUserUrl, signInUrl, signUpUrl } from "../lib/helper/urlConstants";
 
 interface User {
     id: string;

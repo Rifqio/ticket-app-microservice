@@ -3,14 +3,24 @@ import jwt from 'jsonwebtoken';
 import { Logger } from '@rifqioktario/ticketing-common';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
 import { User } from '../models';
+import { randomBytes } from 'crypto';
 
 const {
     JWT_SECRET,
     GOOGLE_CALLBACK_URL,
     GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET
+    GOOGLE_CLIENT_SECRET,
 } = process.env;
 
+/**
+ * Authenticates a user using Google OAuth.
+ * 
+ * @param accessToken - The access token obtained from Google OAuth.
+ * @param refreshToken - The refresh token obtained from Google OAuth.
+ * @param profile - The user profile obtained from Google OAuth.
+ * @param done - The callback function to be called when authentication is complete.
+ * @returns A Promise that resolves to the authentication result.
+ */
 const googleAuthentication = async (
     accessToken: string,
     refreshToken: string,
@@ -38,7 +48,7 @@ const googleAuthentication = async (
 
             const responseBuilder = {
                 data: { user: email, token: userJwt },
-                message: 'User created successfully',
+                message: 'User signin successfully',
             };
 
             return done(null, responseBuilder);
@@ -46,7 +56,7 @@ const googleAuthentication = async (
 
         await new User({
             email: email!,
-            password: 'password',
+            password: randomBytes(8).toString('hex'),
         }).save();
 
         const userJwt = jwt.sign({ id: userId, email }, JWT_SECRET!, {
@@ -58,7 +68,7 @@ const googleAuthentication = async (
                 user: email,
                 token: userJwt,
             },
-            message: 'User signin successfully',
+            message: 'User created successfully',
         };
 
         return done(null, responseBuilder);
@@ -69,7 +79,8 @@ const googleAuthentication = async (
 };
 
 passport.use(
-    new GoogleStrategy({
+    new GoogleStrategy(
+        {
             clientID: GOOGLE_CLIENT_ID!,
             clientSecret: GOOGLE_CLIENT_SECRET!,
             callbackURL: GOOGLE_CALLBACK_URL!,
@@ -79,7 +90,7 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done) => {
-    done(null, user);
+    done(null, user.data);
 });
 
 passport.deserializeUser((user: any, done) => {

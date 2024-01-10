@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import { Router } from 'express';
 import {
     CurrentUser,
     Signin,
@@ -13,7 +13,7 @@ import { AuthHandler, ValidationHandler } from '@rifqioktario/ticketing-common';
 import passport from '../controller/PassportController';
 const { CLIENT_HOST } = process.env;
 
-const route = express.Router();
+const route = Router();
 
 route.post('/signup', SignupValidator, ValidationHandler, Signup);
 route.post('/signin', SigninValidator, ValidationHandler, Signin);

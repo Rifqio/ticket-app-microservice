@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/home";
 import { Register, Login } from "../pages/auth";
-import { Header } from "../components";
+import { Navbar } from "@/components";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
             <>
-                <Header />
+                <Navbar />
                 <Home />
             </>
         ),
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: (
             <>
-                <Header />
+                <Navbar />
                 <Register />
             </>
         ),
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: (
             <>
-                <Header />
+                <Navbar />
                 <Login />,
             </>
         ),
