@@ -26,6 +26,15 @@ spec:
             value: mongodb://ticket-api-mongodb:27017/auth
           - name: APP_PORT
             value: "5000"
+          - name: NATS_HOST
+            value: http://ticket-nats-srv:4222
+          - name: NATS_CLUSTER_ID
+            value: ticketing
+          - name: NATS_CLIENT_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+            
 ---
 apiVersion: v1
 kind: Service

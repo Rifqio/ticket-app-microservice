@@ -24,8 +24,8 @@ abstract class Listener<T extends Event> {
             .subscriptionOptions()
             .setDeliverAllAvailable()
             .setManualAckMode(true)
-            .setDurableName(this.queueGroupName);
-        // .ackWait(this.ackWait as number);
+            .setDurableName(this.queueGroupName)
+            .setAckWait(this.ackWait);
     }
 
     parseMessage(msg: Message) {
