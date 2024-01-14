@@ -3,7 +3,9 @@ import { Request, Response } from 'express';
 import { from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Ticket } from '../models';
 import { isEmpty } from 'lodash';
-// import { PaginationParameters } from 'mongoose-paginate-v2';
+import TicketCreatedPublisher from '../events/publisher/TicketCreatedPub';
+import { natsSvc } from '../server/event/NatsConfig';
+import TicketUpdatedPublisher from '../events/publisher/TicketUpdatedPub';
 
 const Namespace = 'TicketController';
 export class TicketController {
@@ -23,6 +25,7 @@ export class TicketController {
                         id: ticket.id,
                         title: ticket.title,
                         price: ticket.price,
+                        userId: ticket.userId,
                     };
                 }),
             )
@@ -30,9 +33,29 @@ export class TicketController {
                 next: (ticket) => {
                     //prettier-ignore
                     Logger.info(`[${Namespace}, createTicket] Ticket created successfully: ${ticket.id}`);
+                    Promise.resolve(
+                        new TicketCreatedPublisher(natsSvc.client).publish({
+                            id: ticket.id,
+                            price: ticket.price,
+                            title: ticket.title,
+                            userId: ticket.userId,
+                        }),
+                    );
+
+                    const response = {
+                        id: ticket.id,
+                        title: ticket.title,
+                        price: ticket.price,
+                    }
+
                     return res
                         .status(201)
-                        .json(BaseResponse.successSaveResponse(ticket));
+                        .json(BaseResponse.successSaveResponse(response));
+                },
+                complete: () => {
+                    Logger.info(
+                        `[${Namespace}, createTicket] Event published successfully`,
+                    );
                 },
                 error: (error) => {
                     //prettier-ignore
@@ -91,7 +114,7 @@ export class TicketController {
 
     static async updateTicket(req: Request, res: Response) {
         const { id } = req.params;
-        const { id: userId } = req.currentUser!
+        const { id: userId } = req.currentUser!;
         const { title, price } = req.body;
 
         from(Ticket.findOne({ _id: id, userId }))
@@ -104,18 +127,21 @@ export class TicketController {
                     ticket.set({ title, price, userId: req.currentUser?.id! });
                     return ticket.save();
                 }),
-                map((ticket) => {
-                    return {
-                        id: ticket?.id,
-                        title: ticket?.title,
-                        price: ticket?.price,
-                    };
-                }),
             )
             .subscribe({
                 next: (ticket) => {
                     //prettier-ignore
-                    Logger.info(`[${Namespace}, updateTicket] Ticket updated successfully: ${ticket}`);
+                    Logger.info(`[${Namespace}, updateTicket] Ticket updated successfully`);
+                    Logger.debug(`[${Namespace}, updateTicket] Data: ${ticket}`)
+
+                    Promise.resolve(
+                        new TicketUpdatedPublisher(natsSvc.client).publish({
+                            id: ticket.id,
+                            price: ticket.price,
+                            title: ticket.title,
+                            userId: ticket.userId,
+                        }),
+                    )
                     return res.json(
                         BaseResponse.successResponse({
                             data: ticket,

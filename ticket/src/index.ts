@@ -4,6 +4,7 @@ import cors from 'cors';
 import routes from './routes/manifest';
 import { DatabaseConnection } from './server/database/DatabaseConnection';
 import { Logger } from '@rifqioktario/ticketing-common';
+import { NatsConnection } from './server/event/NatsConfig';
 
 const APP_PORT = process.env.APP_PORT || 5000;
 const APP_NAME = 'Ticket-Service';
@@ -15,6 +16,8 @@ app.use(cors({
 }));
 
 DatabaseConnection();
+NatsConnection();
+
 app.set('trust proxy', true);
 app.use(express.json());
 app.use(routes);
