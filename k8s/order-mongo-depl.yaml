@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-api-mongodb
+spec:
+  selector:
+    matchLabels:
+      app: order-api-mongodb
+  template:
+    metadata:
+      labels:
+        app: order-api-mongodb
+    spec:
+      containers:
+      - name: order-api-mongodb
+        image: mongo
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-api-mongodb
+spec:
+  selector:
+    app: order-api-mongodb
+  ports:
+  - port: 27017
+    targetPort: 27017
+

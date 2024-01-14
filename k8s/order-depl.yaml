@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ticket-ticket-api
+  name: ticket-order-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ticket-ticket-api
+      app: ticket-order-api
   template:
     metadata:
       labels:
-        app: ticket-ticket-api
+        app: ticket-order-api
     spec: 
       containers:
-      - name: ticket-ticket-api
-        image: rifqio/ticket-service-ticket
+      - name: ticket-order-api
+        image: rifqio/order-service-ticket
         env:
           - name: NODE_ENV
             value: development
           - name: APP_NAME
-            value: "Ticket-Service"
+            value: "Order-Service"
           - name: JWT_SECRET
             value: "29727dd2e90e14090690e4d60c89eb70"
           - name: MONGO_URL
-            value: mongodb://ticket-api-mongodb:27017/ticket
+            value: mongodb://order-api-mongodb:27017/order
           - name: APP_PORT
-            value: "5000"
+            value: "5500"
           - name: NATS_HOST
             value: http://ticket-nats-srv:4222
           - name: NATS_CLUSTER_ID
@@ -39,11 +39,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ticket-ticket-api
+  name: ticket-order-api
 spec:
   selector:
-    app: ticket-ticket-api
+    app: ticket-order-api
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: 5500
+    targetPort: 5500
 

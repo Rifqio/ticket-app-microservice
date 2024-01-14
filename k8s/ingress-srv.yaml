@@ -36,3 +36,10 @@ spec:
               name: ticket-ticket-api
               port:
                 number: 5000
+        - pathType: ImplementationSpecific
+          path: /api/orders/?(.*)
+          backend:
+            service:
+              name: ticket-order-api
+              port:
+                number: 5500

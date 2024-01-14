@@ -1,0 +1,110 @@
+version: '3'
+
+services:
+  nats: 
+    image: nats-streaming:0.17.0
+    restart: always
+    ports:
+      - 4222:4222
+      - 8222:8222
+    networks:
+      - ticket-network
+
+  ticket-auth-mongodb: 
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ticket-auth-mongodb-data:/data/db
+    networks:
+      - ticket-network
+
+  ticket-auth-service:
+    image: rifqio/auth-service-ticket:latest
+    build:
+      context: .
+      dockerfile: ./auth/Dockerfile
+    env_file:
+      - ./ticket/.env.docker
+    ports:
+      - 4000:4000
+    depends_on:
+      - ticket-auth-mongodb
+    networks:
+      - ticket-network
+    
+  ticket-ticket-mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - ticket-ticket-mongodb-data:/data/db
+    networks:
+      - ticket-network
+  
+  ticket-ticket-service:
+    image: rifqio/ticket-service-ticket:latest
+    build:
+      context: .
+      dockerfile: ./ticket/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=5000
+      - APP_HOST=localhost
+      - JWT_SECRET=29727dd2e90e14090690e4d60c89eb70
+      - CIPHER_ALGORITHM=aes-128-ofb
+      - MONGO_URL=mongodb://ticket-ticket-mongodb:27017/ticket
+      - NATS_URL=nats://nats:4222
+      - NATS_CLUSTER_ID=ticketing
+      - NATS_CLIENT_ID=ticket-service
+    ports:
+      - 5000:5000
+    depends_on:
+      - ticket-ticket-mongodb
+      - nats
+    networks:
+      - ticket-network
+  
+  ticket-order-mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27019:27017
+    volumes:
+      - ticket-order-mongodb-data:/data/db
+    networks:
+      - ticket-network
+  
+  ticket-order-service:
+    image: rifqio/order-service-ticket:latest
+    build:
+      context: .
+      dockerfile: ./order/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - APP_PORT=5500
+      - APP_HOST=localhost
+      - JWT_SECRET=29727dd2e90e14090690e4d60c89eb70
+      - CIPHER_ALGORITHM=aes-128-ofb
+      - MONGO_URL=mongodb://ticket-order-mongodb:27017/order
+      - NATS_URL=nats://nats:4222
+      - NATS_CLUSTER_ID=ticketing
+      - NATS_CLIENT_ID=order-service
+    ports:
+      - 5500:5500
+    depends_on:
+      - ticket-ticket-mongodb
+      - nats
+    networks:
+      - ticket-network
+
+networks:
+  ticket-network:
+    name: ticket-network
+
+volumes:
+  ticket-auth-mongodb-data:
+  ticket-ticket-mongodb-data:
+  ticket-order-mongodb-data:
