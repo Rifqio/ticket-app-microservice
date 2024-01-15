@@ -1,3 +1,4 @@
 import HttpLogger from './requestLogger';
+import AuthStrategies from './authStrategies';
 
-export { HttpLogger };
+export { HttpLogger, AuthStrategies };

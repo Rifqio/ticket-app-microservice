@@ -1,6 +1,6 @@
 import { ServerRoute } from '@hapi/hapi';
 import * as OrderController from './controller/OrderController';
-import Joi from '@hapi/joi';
+import { AddOrderSchema } from './lib/schema/RequestSchema';
 
 export const routes: ServerRoute[] = [
     {
@@ -9,28 +9,27 @@ export const routes: ServerRoute[] = [
         handler: OrderController.GetOrder,
         options: {
             description: 'Get Order',
-            tags: ['api', 'order']
+            tags: ['api', 'order'],
+            auth: 'jwt'
         }
     },
     {
         method: 'POST',
         path: '/',
-        handler: OrderController.GetOrder,
+        handler: OrderController.AddOrder,
         options: {
             description: 'Add Order',
             tags: ['api', 'order'],
             validate: {
-                payload: Joi.object({
-                    name: Joi.string().required(),
-                    price: Joi.number().min(1).required()
-                })
-            }
+                payload: AddOrderSchema
+            },
+            auth: 'jwt'
         }
     },
     {
         method: 'GET',
         path: '/{id}',
-        handler: OrderController.GetOrder,
+        handler: OrderController.GetSingleOrder,
         options: {
             description: 'Get Single Order',
             tags: ['api', 'order']
@@ -39,7 +38,7 @@ export const routes: ServerRoute[] = [
     {
         method: 'DELETE',
         path: '/{id}',
-        handler: OrderController.GetOrder,
+        handler: OrderController.DeleteOrder,
         options: {
             description: 'Delete Single Order',
             tags: ['api', 'order']

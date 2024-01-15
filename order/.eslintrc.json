@@ -15,7 +15,8 @@
     },
     "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
-        "@hapi/scope-start": "off"
+        "@hapi/scope-start": "off",
+        "brace-style": "off"
     },
     "ignorePatterns": [
         "build/" // Add your build folder to the ignore patterns

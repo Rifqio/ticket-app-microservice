@@ -13,15 +13,15 @@ const requestLogger = {
 
             const formattedQuery =
                 Object.keys(query).length === 0
-                    ? ''
-                    : ` | Request Query: ${JSON.stringify(query)} `;
+                    ? ' '
+                    : ` | Query: ${JSON.stringify(query)} `;
 
             if (request?.payload === undefined) {
                 payload = '';
             } else if (request?.payload !== null) {
-                payload = `| Request Payload: ${JSON.stringify(request?.payload)} `;
+                payload = `| Payload: ${JSON.stringify(request?.orig?.payload)} `;
             } else {
-                payload = '';
+                payload = ' ';
             }
 
             const responseTime = responded - received;

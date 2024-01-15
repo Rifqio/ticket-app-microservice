@@ -102,7 +102,6 @@ services:
 
 networks:
   ticket-network:
-    name: ticket-network
 
 volumes:
   ticket-auth-mongodb-data:
